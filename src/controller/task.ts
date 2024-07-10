@@ -15,17 +15,20 @@ export const addTask = (req: Request, res: Response) => {
 
 export const getTasks = (req: Request, res: Response, next: NextFunction) => {
   const userId = req.user?.id!;
+
   const tasks = taskService.getTasks(Number(userId));
+
   if (!tasks) {
     next(new BadRequestError(`Task with following  id ${userId} doesnt exist`));
     return;
   }
+
   res.status(httpStatusCodes.OK).json({ message: tasks });
 };
 
 export const updateTask = (req: Request, res: Response, next: NextFunction) => {
-  const userId = req.user?.id!;
   const { id } = req.params;
+  const userId = req.user?.id!;
   const data = req.body;
 
   const updatedTask = taskService.updateTask(Number(id), data, userId);
@@ -33,17 +36,21 @@ export const updateTask = (req: Request, res: Response, next: NextFunction) => {
   if (!updatedTask) {
     next(new BadRequestError(`Task with following id: ${id} doesnt exist`));
     return;
-  } else {
-    res.status(httpStatusCodes.OK).json({ message: "Updated successfully!" });
   }
+
+  res.status(httpStatusCodes.OK).json({ message: "Updated successfully!" });
 };
 
-export const deleteTask = (req: Request, res: Response) => {
-  const id = req.params;
-  const deleteTask = taskService.deleteTask(Number(id));
+export const deleteTask = (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const userId = req.user?.id!;
+
+  const deleteTask = taskService.deleteTask(Number(id), userId);
+
   if (!deleteTask) {
-    res.status(404).json({ message: "List is empty!" });
-  } else {
-    res.status(201).json({ message: "deleted successfully!" });
+    next(new BadRequestError(`Task with following id: ${id} doesnt exist`));
+    return;
   }
+
+  res.status(httpStatusCodes.OK).json({ message: "deleted successfully!" });
 };
