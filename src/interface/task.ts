@@ -4,5 +4,4 @@ export interface Todo {
   taskName: string;
   isCompleted: boolean;
   createdAt: Date;
-  
 }

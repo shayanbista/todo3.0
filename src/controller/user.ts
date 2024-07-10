@@ -1,13 +1,12 @@
-import { getTasks } from './task';
-import { NextFunction,Response } from "express";
-import { Request } from '../interface/request';
+import { NextFunction, Response } from "express";
+import { Request } from "../interface/request";
 import * as userService from "../service/user";
 import httpStatusCodes from "http-status-codes";
 import loggerWithNameSpace from "../utils/logger";
 
-
 export const getUsers = (req: Request, res: Response) => {
   const users = userService.getUsers();
+  console.log("users", users);
   if (users) res.status(200).json({ message: users });
   else
     res
@@ -35,7 +34,3 @@ export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
   const message = userService.deleteUsers(id);
   res.json(message);
 };
-
-
-
-

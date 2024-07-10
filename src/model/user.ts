@@ -2,7 +2,6 @@ import { User } from "./../interface/user";
 import { Roles } from "../constant/Roles";
 import { permissions } from "../constant/Permission";
 
-
 const users: User[] = [
   {
     id: 1,

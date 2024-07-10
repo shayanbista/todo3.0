@@ -15,6 +15,7 @@ export const login = async (body: Pick<User, "email" | "password">) => {
   if (!existingUser) {
     return null;
   }
+
   const isvalidPassword = await bcrypt.compare(
     body.password,
     existingUser.password
@@ -39,7 +40,7 @@ export const login = async (body: Pick<User, "email" | "password">) => {
   const refreshToken = sign(payload, s, {
     expiresIn: config.jwt.refreshTokenExpiration,
   });
-  return { accessToken, refreshToken };
+  return { accessToken, refreshToken, existingUser };
 };
 
 export const signUp = async (user: User) => {

@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
 import { User } from "../interface/user";
 import * as userModel from "../model/user";
+import { Roles } from "../constant/Roles";
+import { permissions } from "../constant/Permission";
 
 export const createUser = async (user: User) => {
   const existingUser = getUserByEmail(user.email);
@@ -10,6 +12,9 @@ export const createUser = async (user: User) => {
   } else {
     console.log("user can be created");
     const password = await bcrypt.hash(user.password, 10);
+    const userRole = Roles.USER;
+    user.role = Roles.USER;
+    user.permissions = permissions[Roles.USER];
     const newUser = userModel.createUser({ ...user, password });
     return true;
   }
@@ -67,7 +72,6 @@ export const updateUser = async (id: number, users: User) => {
 //   }
 // };
 
-
 export const deleteUsers = (id: number) => {
   const usersIndex = userModel.findUserIndex(id);
   // Check if users exists
@@ -76,9 +80,3 @@ export const deleteUsers = (id: number) => {
   userModel.deleteUser(usersIndex);
   return { message: "users deleted" };
 };
-
-
-
-
-
-

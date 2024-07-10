@@ -32,9 +32,9 @@ export const taskLists: Tasklist = [
   },
 ];
 
-export const addTask = (newTask: Todo) => {
+export const addTask = (newTask: Todo, userId: number) => {
   const task = {
-    userId: newTask.userId,
+    userId: userId,
     id: taskLists.length + 1,
     taskName: newTask.taskName,
     createdAt: new Date(),
@@ -45,11 +45,15 @@ export const addTask = (newTask: Todo) => {
 };
 
 export const findTasksByUserId = (userId: number) => {
-  console.log("userId inside model", userId);
   return taskLists.filter((task) => {
     return task.userId === userId;
   });
 };
+
+
+// export const findTaskByUserId=(userId:number)=>{
+
+// }
 
 export const getTasks = () => {
   return taskLists;
@@ -57,6 +61,12 @@ export const getTasks = () => {
 
 export const findTaskIndexById = (id: number): number => {
   return taskLists.findIndex((task) => task.id === id);
+};
+
+export const findTaskById = (taskId: number, userId: number) => {
+  return taskLists.find((task) => {
+    return task.id === taskId && task.userId === userId;
+  });
 };
 
 export const updateTask = (id: number, updatedData: Todo, index: number) => {
