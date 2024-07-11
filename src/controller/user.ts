@@ -4,15 +4,16 @@ import * as userService from "../service/user";
 import httpStatusCodes from "http-status-codes";
 import loggerWithNameSpace from "../utils/logger";
 import { ConflictError } from "../error/ConflictError";
+import { BadRequestError } from "../error/BadRequestError";
 
-export const getUsers = (req: Request, res: Response) => {
+const logger = loggerWithNameSpace("user controller");
+
+export const getUsers = (req: Request, res: Response, next: NextFunction) => {
   const users = userService.getUsers();
   console.log("users", users);
-  if (users) res.status(200).json({ message: users });
-  else
-    res
-      .status(httpStatusCodes.BAD_REQUEST)
-      .json({ message: "User not found!" });
+  if (!users) {
+    next(new BadRequestError("users dont exist"));
+  } else res.status(httpStatusCodes.OK).json({ message: users });
 };
 
 export const createUser = async (
@@ -28,43 +29,24 @@ export const createUser = async (
   res.status(httpStatusCodes.CREATED).json({ message: "created successfully" });
 };
 
-// export const createUser = as(req: Request, res: Response) => {
-//   const { body } = req;
-
-//     const data = await authServices.signUp(body);
-//     if (!data) {
-//       next(new ConflictError("email already exists"));
-//     }
-//     res
-//       .status(httpStatusCodes.CREATED)
-//       .json({ message: "created successfully" });
-
-//   const users = userService.getUsers();
-//   console.log("users", users);
-//   if (users) res.status(200).json({ message: users });
-//   else
-//     res
-//       .status(httpStatusCodes.BAD_REQUEST)
-//       .json({ message: "User not found!" });
-// };
-
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { id } = req.params;
   const data = req.body;
 
   const user = await userService.updateUser(Number(id), data);
-  if (user) {
-    console.log(user);
-    res.status(200).json({ message: user });
-  } else {
-    res
-      .status(httpStatusCodes.BAD_REQUEST)
-      .json({ message: "User not found!" });
+
+  if (!user) {
+    next(new BadRequestError("email already exists"));
   }
+  res.status(httpStatusCodes.OK).json({ message: user });
 };
 
 export const deleteUser = (req: Request, res: Response, next: NextFunction) => {
   const id = parseInt(req.params.id);
   const message = userService.deleteUsers(id);
-  res.json(message);
+  res.json(httpStatusCodes.OK).json(message);
 };

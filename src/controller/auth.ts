@@ -3,6 +3,9 @@ import { NextFunction, Request, Response } from "express";
 import * as authServices from "../service/auth";
 import { BadRequestError } from "../error/BadRequestError";
 import { ConflictError } from "../error/ConflictError";
+import loggerWithNameSpace from "../utils/logger";
+
+const logger = loggerWithNameSpace("auth controller");
 
 export const login = async (
   req: Request,
@@ -14,6 +17,7 @@ export const login = async (
   if (data) {
     res.status(httpStatusCodes.OK).json({ message: data });
   } else {
+    logger.info("logged in");
     next(new BadRequestError(`following  id doesnt exist`));
     return;
   }
