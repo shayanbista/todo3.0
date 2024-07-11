@@ -1,5 +1,8 @@
 import { Todo } from "../interface/task";
 import { Tasklist } from "../interface/tasklist";
+import loggerWithNameSpace from "../utils/logger";
+
+const logger = loggerWithNameSpace("TaskModel");
 
 export const taskLists: Tasklist = [
   {
@@ -33,6 +36,7 @@ export const taskLists: Tasklist = [
 ];
 
 export const addTask = (newTask: Todo, userId: number) => {
+  logger.info("addTask");
   const task = {
     userId: userId,
     id: taskLists.length + 1,
@@ -50,12 +54,8 @@ export const findTasksByUserId = (userId: number) => {
   });
 };
 
-
-// export const findTaskByUserId=(userId:number)=>{
-
-// }
-
 export const getTasks = () => {
+  logger.info("getallTasks");
   return taskLists;
 };
 
@@ -70,10 +70,12 @@ export const findTaskById = (taskId: number, userId: number) => {
 };
 
 export const updateTask = (id: number, updatedData: Todo, index: number) => {
+  logger.info("updateTask");
   taskLists[index] = { ...taskLists[index], ...updatedData };
   return taskLists[index];
 };
 
 export const deleteTask = (index: number): void => {
+  logger.info("deleteTask");
   taskLists.splice(index, 1);
 };

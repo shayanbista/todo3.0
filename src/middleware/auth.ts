@@ -4,6 +4,9 @@ import { verify } from "jsonwebtoken";
 import config from "../config";
 import { User } from "../interface/user";
 import { UnauthenticatedError } from "../error/UnauthenticatedError";
+import loggerWithNameSpace from "../utils/logger";
+
+const logger = loggerWithNameSpace("AuthMiddleware");
 
 export const authenticate = (
   req: Request,
@@ -14,7 +17,6 @@ export const authenticate = (
 
   if (!authorization) {
     if (!authorization) {
-
       next(new UnauthenticatedError("Unauthenticated"));
       return;
     }
@@ -23,9 +25,6 @@ export const authenticate = (
   const token = authorization.split(" ");
 
   if (token.length !== 2 || token[0] !== "Bearer") {
-    // if (!authorization) {
-    //   return res.status(401).json({ error: "Access denied!" });
-    // }
     next(new UnauthenticatedError("Access denied"));
     return;
   }
@@ -33,6 +32,7 @@ export const authenticate = (
     const user = verify(token[1], config.jwt.secret!) as User;
     req.user = user;
 
+    logger.info("user authenticated");
     next();
   } catch (error) {
     throw new UnauthenticatedError("error");
@@ -46,6 +46,7 @@ export const authorize = (permission: string) => {
     if (!user.permissions.includes(permission)) {
       next(new UnauthenticatedError("Forbidden"));
     }
+    logger.info("user authorized");
     next();
   };
 };

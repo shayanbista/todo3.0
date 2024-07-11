@@ -1,6 +1,9 @@
 import { User } from "./../interface/user";
 import { Roles } from "../constant/Roles";
 import { permissions } from "../constant/Permission";
+import loggerWithNameSpace from "../utils/logger";
+
+const logger = loggerWithNameSpace("UserModel");
 
 const users: User[] = [
   {
@@ -27,6 +30,7 @@ export const createUser = (user: User) => {
     ...user,
     id: users.length + 1,
   };
+  logger.info("users pushed to array");
   users.push(newUser);
 };
 
@@ -35,15 +39,18 @@ export const getUsers = () => {
 };
 
 export const getUserByEmail = (email: string) => {
+  logger.info("finy user by email");
   return users.find((user) => user.email === email);
 };
 
 export const updateUser = (id: number, updatedData: User, index: number) => {
   users[index] = { ...users[index], ...updatedData };
+  logger.info("updateUser");
   return [index];
 };
 
 export const deleteUser = (index: number): void => {
+  logger.info("deleteUser");
   users.splice(index, 1);
 };
 
