@@ -10,11 +10,5 @@ export const permissions = {
     "tasks.put",
     "tasks.delete",
   ],
-  [Roles.USER]: [
-    "users.post",
-    "tasks.get",
-    "tasks.post",
-    "tasks.put",
-    "tasks.delete",
-  ],
+  [Roles.USER]: ["tasks.get", "tasks.post", "tasks.put", "tasks.delete"],
 };

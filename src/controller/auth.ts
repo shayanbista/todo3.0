@@ -27,20 +27,24 @@ export const signUp = async (
   const { body } = req;
   const data = await authServices.signUp(body);
   if (!data) {
-    next(new ConflictError("email already exosts"));
+    next(new ConflictError("email already exists"));
   }
   res.status(httpStatusCodes.CREATED).json({ message: "created successfully" });
 };
 
-export const refreshToken = async (req: Request, res: Response) => {
+export const refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { authorization } = req.headers;
 
   if (authorization) {
     const token = authorization.split(" ");
     const newToken = await authServices.refreshToken(token[1]);
 
-    res.status(201).json(newToken);
+    res.status(httpStatusCodes.CREATED).json(newToken);
   } else {
-    res.status(404).json({ message: "header not dound" });
+    next(new BadRequestError("authentication doesnt exist"));
   }
 };
