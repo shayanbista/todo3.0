@@ -1,24 +1,35 @@
-import { Request, Response } from "express";
+import httpStatusCodes from "http-status-codes";
+import { NextFunction, Request, Response } from "express";
 import * as authServices from "../service/auth";
+import { BadRequestError } from "../error/BadRequestError";
+import { ConflictError } from "../error/ConflictError";
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { body } = req;
   const data = await authServices.login(body);
   if (data) {
-    res.status(200).json({ message: data });
+    res.status(httpStatusCodes.OK).json({ message: data });
   } else {
-    res.status(404).json({ message: "invalid email or password" });
+    next(new BadRequestError(`following  id doesnt exist`));
+    return;
   }
 };
 
-export const signUp = async (req: Request, res: Response) => {
+export const signUp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { body } = req;
   const data = await authServices.signUp(body);
-  if (data) {
-    res.status(201).json({ message: "created successfully" });
-  } else {
-    res.status(409).json({ message: "email already exists" });
+  if (!data) {
+    next(new ConflictError("email already exosts"));
   }
+  res.status(httpStatusCodes.CREATED).json({ message: "created successfully" });
 };
 
 export const refreshToken = async (req: Request, res: Response) => {

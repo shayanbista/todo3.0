@@ -1,6 +1,6 @@
 import express from "express";
 import config from "./config";
-import router from "./routes";
+import router from "./route";
 import { genericErrorHandler, notFoundError } from "./middleware/errorHandler";
 import { RequestLogger } from "./middleware/logger";
 

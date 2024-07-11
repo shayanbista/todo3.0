@@ -14,7 +14,7 @@ export const authenticate = (
 
   if (!authorization) {
     if (!authorization) {
-      // return res.status(401).json({ error: "No authentication header" });
+
       next(new UnauthenticatedError("Unauthenticated"));
       return;
     }

@@ -5,6 +5,7 @@ import { UnauthenticatedError } from "../error/UnauthenticatedError";
 import { BadRequestError } from "../error/BadRequestError";
 import loggerWithNameSpace from "../utils/logger";
 import { ForbiddenError } from "../error/ForbiddenError";
+import { ConflictError } from "../error/ConflictError";
 
 const logger = loggerWithNameSpace("Errorhandler");
 
@@ -51,6 +52,10 @@ export function genericErrorHandler(
     });
   } else if (error instanceof ForbiddenError) {
     return res.status(httpStatusCodes.FORBIDDEN).json({
+      message: error.message,
+    });
+  } else if (error instanceof ConflictError) {
+    return res.status(httpStatusCodes.CONFLICT).json({
       message: error.message,
     });
   }
