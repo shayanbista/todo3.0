@@ -43,12 +43,3 @@ export const deleteTask = (id: number, userId: number) => {
   taskModel.deleteTask(id);
   return true;
 };
-// export const getTasksByUserId = (userId: number, next: NextFunction) => {
-//   const tasks = taskModel.findTasksByUserId(userId);
-//   console.log("Tasks", tasks.length);
-//   if (tasks.length > 0) {
-//     return tasks;
-//   } else {
-//     return "error";
-//   }
-// };

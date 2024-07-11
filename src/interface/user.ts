@@ -1,12 +1,3 @@
-// export interface User {
-//   id: number;
-//   name: string;
-//   email: string;
-//   password: string;
-//   role: string;
-// }
-
-// user.ts
 import { Roles } from "../constant/Roles";
 
 export interface User {
