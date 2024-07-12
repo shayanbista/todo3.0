@@ -18,22 +18,9 @@ export const login = async (
     res.status(httpStatusCodes.OK).json({ message: data });
   } else {
     logger.info("logged in");
-    next(new BadRequestError(`following  id doesnt exist`));
+    next(new BadRequestError(`credentials dont match`));
     return;
   }
-};
-
-export const signUp = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const { body } = req;
-  const data = await authServices.signUp(body);
-  if (!data) {
-    next(new ConflictError("email already exists"));
-  }
-  res.status(httpStatusCodes.CREATED).json({ message: "created successfully" });
 };
 
 export const refreshToken = async (
@@ -41,14 +28,13 @@ export const refreshToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { authorization } = req.headers;
+  const { token } = req.body;
 
-  if (authorization) {
-    const token = authorization.split(" ");
-    const newToken = await authServices.refreshToken(token[1]);
+  if (token) {
+    const newToken = await authServices.refreshToken(token);
 
     res.status(httpStatusCodes.CREATED).json(newToken);
   } else {
-    next(new BadRequestError("authentication doesnt exist"));
+    next(new BadRequestError("token doesnt exist"));
   }
 };

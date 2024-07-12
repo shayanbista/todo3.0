@@ -40,7 +40,7 @@ export const login = async (body: Pick<User, "email" | "password">) => {
   const refreshToken = sign(payload, s, {
     expiresIn: config.jwt.refreshTokenExpiration,
   });
-  return { accessToken, refreshToken, existingUser };
+  return { accessToken, refreshToken };
 };
 
 export const signUp = async (user: User) => {
