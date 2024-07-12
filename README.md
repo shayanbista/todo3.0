@@ -33,7 +33,7 @@ Create .env file with the help of .env.example to configure the port
 The value of port should be equal to the port defined in `.env`
 
 ```bash
-docker run -p <PORT>:<PORT> --env-file=<path_to_env> shayanbista786/todo:4.0
+docker run -p <PORT>:<PORT> --env-file=<path_to_env> shayanbista786/todo:3.0
 ```
 
 ### Routes
