@@ -38,8 +38,10 @@ export const deleteTask = (id: number, userId: number) => {
   }
 
   const index = taskModel.findTaskIndexById(id);
-  if (index === -1) return null;
 
-  taskModel.deleteTask(id);
-  return true;
+  if (index === -1) return null;
+  else {
+    taskModel.deleteTask(index);
+    return true;
+  }
 };

@@ -23,25 +23,26 @@ export function genericErrorHandler(
     logger.error(error.stack);
   }
 
-  if (error instanceof UnauthenticatedError) {
-    return res.status(httpStatusCodes.UNAUTHORIZED).json({
-      message: error.message,
-    });
-  } else if (error instanceof BadRequestError) {
-    return res.status(httpStatusCodes.BAD_REQUEST).json({
-      message: error.message,
-    });
-  } else if (error instanceof ForbiddenError) {
-    return res.status(httpStatusCodes.FORBIDDEN).json({
-      message: error.message,
-    });
-  } else if (error instanceof ConflictError) {
-    return res.status(httpStatusCodes.CONFLICT).json({
-      message: error.message,
-    });
+  switch (true) {
+    case error instanceof UnauthenticatedError:
+      return res.status(httpStatusCodes.UNAUTHORIZED).json({
+        message: error.message,
+      });
+    case error instanceof BadRequestError:
+      return res.status(httpStatusCodes.BAD_REQUEST).json({
+        message: error.message,
+      });
+    case error instanceof ForbiddenError:
+      return res.status(httpStatusCodes.FORBIDDEN).json({
+        message: error.message,
+      });
+    case error instanceof ConflictError:
+      return res.status(httpStatusCodes.CONFLICT).json({
+        message: error.message,
+      });
+    default:
+      return res.status(httpStatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: "Internal server error",
+      });
   }
-
-  return res.status(httpStatusCodes.INTERNAL_SERVER_ERROR).json({
-    message: "Internal server error",
-  });
 }
