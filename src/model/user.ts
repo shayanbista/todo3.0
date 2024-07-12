@@ -50,7 +50,7 @@ export const updateUser = (id: number, updatedData: User, index: number) => {
 };
 
 export const deleteUser = (index: number): void => {
-  logger.info("deleteUser");
+  logger.info("deleteUser", index);
   users.splice(index, 1);
 };
 
